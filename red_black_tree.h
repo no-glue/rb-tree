@@ -92,6 +92,16 @@ private:
     leaf->parent = return_node;
   }
   void right_rotate(Node * & leaf, Node * & root) {
+    // rotate to right, with left child
+    Node * return_node = leaf->left;
+    leaf->left = return_node->right;
+    if(return_node->right) return_node->right->parent = leaf;
+    return_node->parent = leaf->parent;
+    if(!leaf->parent) root = return_node;
+    else if(leaf == leaf->parent->right) leaf->parent->right = return_node;
+    else leaf->parent->left = return_node;
+    return_node->right = leaf;
+    leaf->parent = return_node;
   }
   void make_empty(Node * & root) {
     // make tree empty
