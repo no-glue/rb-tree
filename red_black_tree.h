@@ -9,6 +9,10 @@ public:
     // insert key and value
     insert(key, value, root);
   }
+  Node * find(Str key) {
+    // find a node givem a key
+    return find(key, root);
+  }
 private:
   Node * root;
   void insert(Str key, Str value, Node * & root) {
@@ -29,7 +33,7 @@ private:
     }
     insert_fixup(to_add, root);
   }
-  void insert_fixup(Node * & leaf, Node * & root) {
+  void insert_fixup(Node * leaf, Node * & root) {
     // fix insert, bottom up
     Node * uncle;
     while(leaf->parent && leaf->parent->parent && leaf->parent->color) {
@@ -79,7 +83,7 @@ private:
     }
     root->color = false;
   }
-  void left_rotate(Node * & leaf, Node * & root) {
+  void left_rotate(Node * leaf, Node * & root) {
     // rotate to left, with right child
     Node * return_node = leaf->right;
     leaf->right = return_node->left;
@@ -91,7 +95,7 @@ private:
     return_node->left = leaf;
     leaf->parent = return_node;
   }
-  void right_rotate(Node * & leaf, Node * & root) {
+  void right_rotate(Node * leaf, Node * & root) {
     // rotate to right, with left child
     Node * return_node = leaf->left;
     leaf->left = return_node->right;
@@ -111,6 +115,16 @@ private:
       delete root;
     }
     root = NULL;
+  }
+  Node * find(Str key, Node * & root) {
+    // find a node given a key
+    Node * to_look = root;
+    while(to_look) {
+      if(key == to_look->key) return to_look;
+      if(to_look->left && key < to_look->key) to_look = to_look->left;
+      else if(to_look->right) to_look = to_look->right;
+    }
+    return NULL;
   }
 };
 // Every node is either black or red
