@@ -9,6 +9,10 @@ public:
     // insert key and value
     insert(key, value, root);
   }
+  void remove(Str key) {
+    // remove node from tree
+    remove(key, root);
+  }
   Node * find(Str key) {
     // find a node givem a key
     return find(key, root);
@@ -82,6 +86,9 @@ private:
       }
     }
     root->color = false;
+  }
+  void remove(Str key, Node * & root) {
+    // remove node from tree
   }
   void left_rotate(Node * leaf, Node * & root) {
     // rotate to left, with right child
