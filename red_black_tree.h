@@ -2,7 +2,7 @@ template<class Node, typename Str>class RedBlackTree {
 public:
   RedBlackTree():root(NULL) {}
   ~RedBlackTree() {
-    make_empty(root); // todo make empty
+    make_empty(root);
     delete root;
   }
   void insert(Str key, Str value) {
@@ -196,6 +196,16 @@ private:
     else leaf->parent->left = return_node;
     return_node->right = leaf;
     leaf->parent = return_node;
+  }
+  Node * successor(Node * subject) {
+    // find node successor
+    if(subject->right) return tree_min(subject); // todo tree_min
+    Node * temp = subject->parent;
+    while(temp && subject == temp->right) {
+      subject = temp;
+      temp = temp->parent;
+    }
+    return temp;
   }
   void make_empty(Node * & root) {
     // make tree empty
