@@ -95,7 +95,7 @@ private:
       else successor = successor(to_remove); // todo successor
       if(successor->left) child = successor->left;
       else child = successor->right;
-      child-parent=successor->parent;
+      child->parent = successor->parent;
       if(!successor->parent) root = child;
       else {
         if(successor == successor->parent->left) {
@@ -146,6 +146,7 @@ private:
       } else {
         // leaf is on the right
         child = leaf->parent->left;
+        // child is on the left
         if(child->color) {
           child->color = false;
           leaf->parent->color = true;
@@ -164,7 +165,7 @@ private:
           }
           child->color = leaf->parent->color;
           leaf->parent->color = false;
-          child->left->color = black;
+          child->left->color = false;
           right_rotate(leaf->parent, root);
           leaf = root;
         }
@@ -221,3 +222,4 @@ private:
 // If a node is red both children are black
 // Every path from node to leaf contains same number of black nodes
 // Based on 2, 4 (2, 3, 4) tree
+// logn time
