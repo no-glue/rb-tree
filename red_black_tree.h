@@ -89,89 +89,6 @@ private:
   }
   void remove(Str key, Node * & root) {
     // remove node from tree
-    Node * to_remove = find(key, root), *successor = NULL, *child = NULL;
-    if(to_remove) {
-      if(!to_remove->left || !to_remove->right) successor = to_remove;
-      else successor = tree_successor(to_remove);
-      if(successor->left) child = successor->left;
-      else child = successor->right;
-      child->parent = successor->parent;
-      if(!successor->parent) root = child;
-      else {
-        if(successor == successor->parent->left) {
-          // if successor is left child
-          successor->parent->left = child;
-        } else {
-          // if successor is right child
-          successor->parent->right = child;
-        }
-      }
-      if(child != to_remove) {
-        to_remove->key = successor->key;
-        to_remove->value = successor->value;
-      }
-      if(!successor->color) remove_fixup(child, root);
-    }
-  }
-  void remove_fixup(Node * leaf, Node * & root) {
-    // fixup after node removed
-    Node * child;
-    while(leaf != root && !leaf->color) {
-      if(leaf == leaf->parent->left) {
-        // leaf is on the left
-        child = leaf->parent->right;
-        // child is on the right
-        if(child->color) {
-          child->color = false;
-          leaf->parent->color = true;
-          left_rotate(leaf->parent, root);
-          child = leaf->parent->right;
-        }
-        if(!child->left->color && !child->right->color) {
-          child->color = true;
-          leaf = leaf->parent;
-        } else {
-          if(!child->right->color) {
-            child->left->color = false;
-            child->color = true;
-            right_rotate(child, root);
-            child = leaf->parent->right;
-          }
-          child->color = leaf->parent->color;
-          leaf->parent->color = false;
-          child->right->color = false;
-          left_rotate(leaf->parent, root);
-          leaf = root;
-        }
-      } else {
-        // leaf is on the right
-        child = leaf->parent->left;
-        // child is on the left
-        if(child->color) {
-          child->color = false;
-          leaf->parent->color = true;
-          right_rotate(leaf->parent, root);
-          child  = leaf->parent->left;
-        }
-        if(!child->left->color && !child->right->color) {
-          child->color = true;
-          leaf = leaf->parent;
-        } else {
-          if(!child->left->color) {
-            child->right->color = false;
-            child->color = true;
-            left_rotate(child, root);
-            child = leaf->parent->left;
-          }
-          child->color = leaf->parent->color;
-          leaf->parent->color = false;
-          child->left->color = false;
-          right_rotate(leaf->parent, root);
-          leaf = root;
-        }
-      }
-    }
-    leaf->color = false;
   }
   void left_rotate(Node * leaf, Node * & root) {
     // rotate to left, with right child
@@ -196,21 +113,6 @@ private:
     else leaf->parent->left = return_node;
     return_node->right = leaf;
     leaf->parent = return_node;
-  }
-  Node * tree_successor(Node * subject) {
-    // find node successor
-    if(subject->right) return tree_min(subject);
-    Node * temp = subject->parent;
-    while(temp && subject == temp->right) {
-      subject = temp;
-      temp = temp->parent;
-    }
-    return subject;
-  }
-  Node * tree_min(Node * subject) {
-    // find min of subject
-    while(subject->left) subject = subject->left;
-    return subject;
   }
   void make_empty(Node * & root) {
     // make tree empty
