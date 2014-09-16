@@ -89,10 +89,10 @@ private:
   }
   void remove(Str key, Node * & root) {
     // remove node from tree
-    Node * to_remove = find(key, root), *successor, *child;
+    Node * to_remove = find(key, root), *successor = NULL, *child = NULL;
     if(to_remove) {
       if(!to_remove->left || !to_remove->right) successor = to_remove;
-      else successor = successor(to_remove); // todo successor
+      else successor = tree_successor(to_remove);
       if(successor->left) child = successor->left;
       else child = successor->right;
       child->parent = successor->parent;
@@ -197,15 +197,20 @@ private:
     return_node->right = leaf;
     leaf->parent = return_node;
   }
-  Node * successor(Node * subject) {
+  Node * tree_successor(Node * subject) {
     // find node successor
-    if(subject->right) return tree_min(subject); // todo tree_min
+    if(subject->right) return tree_min(subject);
     Node * temp = subject->parent;
     while(temp && subject == temp->right) {
       subject = temp;
       temp = temp->parent;
     }
-    return temp;
+    return subject;
+  }
+  Node * tree_min(Node * subject) {
+    // find min of subject
+    while(subject->left) subject = subject->left;
+    return subject;
   }
   void make_empty(Node * & root) {
     // make tree empty

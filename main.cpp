@@ -15,7 +15,6 @@ int main() {
   tree->insert("e", "e");
   cout<<"found: "<<tree->find("e")->value[0]<<endl;
   tree->remove("e");
-  cout<<"found: "<<tree->find("e")<<endl;
   delete tree;
   return 0;
 }
