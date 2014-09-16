@@ -7,7 +7,7 @@ public:
   }
   void insert(Str key, Str value) {
     // insert key and value
-    insert(key, value, root);
+    insert(key, value, root, current, parent, grand, great);
   }
   void remove(Str key) {
     // remove node from tree
@@ -19,100 +19,51 @@ public:
   }
 private:
   Node * root;
-  void insert(Str key, Str value, Node * & root) {
+  Node * current;
+  // ... current, 
+  // parent, 
+  // grand, 
+  // great 
+  // used when inserting a node ...
+  Node * parent;
+  Node * grand;
+  Node * great;
+  void insert(Str key, Str value, Node * & root, Node * & current, Node * & parent, Node * & grand, Node * & great) {
     // insert key and value to the tree
-    Node * to_add = new Node(key, value);
-    if(!root) {
-      root = to_add;
-    } else {
-      Node * walk = root;
-      while(walk) {
-        to_add->parent = walk;
-        if(key < walk->key) walk = walk->left;
-        else if(key > walk->key) walk = walk->right;
-        else {walk->value.push_back(value); return;}
-      }
-      if(key < to_add->parent->key) to_add->parent->left = to_add;
-      else to_add->parent->right = to_add;
+    current = parent = grand = root;
+    while(current && (current->key != key)) {
+      great = grand; grand = parent; parent = current;
+      current = key < current->key ? current->left : current->right;
+      if(current && current->left->color && current->right->color) handle_reorient(key, value, root, current, parent, grand, great);
     }
-    insert_fixup(to_add, root);
+    if(current) return;
+    // current is there, nothing to do
+    current = new Node(key, value);
+    if(key < parent->key) parent->left = current;
+    else parent->right = current;
+    handle_reorient(key, value, root, current, parent, grand, great);
   }
-  void insert_fixup(Node * leaf, Node * & root) {
-    // fix insert, bottom up
-    Node * uncle;
-    while(leaf->parent && leaf->parent->parent && leaf->parent->color) {
-      if(leaf->parent == leaf->parent->parent->left) {
-        // fix left side
-        uncle = leaf->parent->parent->right;
-        if(uncle && uncle->color) {
-          // checks for red uncle case 1
-          leaf->parent->color = uncle->color = false;
-          leaf->parent->parent->color = true;
-        } else if(leaf == leaf->parent->right) {
-          // case 2
-          leaf = leaf->parent;
-          left_rotate(leaf, root);
-          leaf->parent->color = false;
-          leaf->parent->parent->color = true;
-          right_rotate(leaf->parent->parent, root);
-        } else {
-          // case 3
-          leaf->parent->color = false;
-          leaf->parent->parent->color = true;
-          right_rotate(leaf->parent->parent, root);
-        }
+  void handle_reorient(Str key, Str value, Node * & root, Node * & current, Node * & parent, Node * & grand, Node * & great) {
+    // handle reorient
+    current->color = true;
+    current->left->color = false;
+    current->right->color = false;
+    // flip color
+    if(parent->color) {
+      // have to rotate
+      grand->color = true;
+      if(key < grand->key != key < parent->key) {
+        parent = rotate(key, value, grand); // todo rotate(key, value, grand...)
+        // do double rotate
       }
-      if(leaf->parent == leaf->parent->parent->right) {
-        // fix right side
-        uncle = leaf->parent->parent->left;
-        if(uncle && uncle->color) {
-          // checks for red uncle case 1
-          leaf->parent->color = uncle->color = false;
-          leaf->parent->parent->color = true;
-          leaf = leaf->parent->parent;
-        } else if(leaf == leaf->parent->left) {
-          // case 2
-          leaf = leaf->parent;
-          right_rotate(leaf, root);
-          leaf->parent->color = false;
-          leaf->parent->parent->color = true;
-          left_rotate(leaf->parent->parent, root);
-        } else {
-          // case 3
-          leaf->parent->color = false;
-          leaf->parent->parent->color = true;
-          left_rotate(leaf->parent->parent, root);
-        }
-      }
+      current = rotate(item, great);
+      current->color = false;
     }
-    root->color = false;
+    root->right->color = false;
+    // make root black
   }
   void remove(Str key, Node * & root) {
     // remove node from tree
-  }
-  void left_rotate(Node * leaf, Node * & root) {
-    // rotate to left, with right child
-    Node * return_node = leaf->right;
-    leaf->right = return_node->left;
-    if(return_node->left) return_node->left->parent = leaf;
-    return_node->parent = leaf->parent;
-    if(!leaf->parent) root = return_node;
-    else if(leaf == leaf->parent->left) leaf->parent->left = return_node;
-    else leaf->parent->right = return_node;
-    return_node->left = leaf;
-    leaf->parent = return_node;
-  }
-  void right_rotate(Node * leaf, Node * & root) {
-    // rotate to right, with left child
-    Node * return_node = leaf->left;
-    leaf->left = return_node->right;
-    if(return_node->right) return_node->right->parent = leaf;
-    return_node->parent = leaf->parent;
-    if(!leaf->parent) root = return_node;
-    else if(leaf == leaf->parent->right) leaf->parent->right = return_node;
-    else leaf->parent->left = return_node;
-    return_node->right = leaf;
-    leaf->parent = return_node;
   }
   void make_empty(Node * & root) {
     // make tree empty
