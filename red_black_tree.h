@@ -53,14 +53,43 @@ private:
       // have to rotate
       grand->color = true;
       if(key < grand->key != key < parent->key) {
-        parent = rotate(key, value, grand); // todo rotate(key, value, grand...)
+        rotate(key, value, parent, grand);
         // do double rotate
       }
-      current = rotate(item, great);
+      rotate(key, item, current, great);
       current->color = false;
     }
     root->right->color = false;
     // make root black
+  }
+  void rotate(Str key, Str value, Node * & the_current, Node * & the_parent) {
+    // rotate
+    if(key < the_parent->key) {
+      key < the_parent->left->key ? 
+        rotate_with_left_child(the_parent->left) : // LL todo rotate_with_left_child
+        rotate_with_right_child(the_parent->left); // LR todo rotate_with_right_child
+      the_current = the_parent->left;
+    } else {
+      key < the_parent->right->key ? 
+        rotate_with_left_child(the_parent->right) : // RL
+        rotate_with_right_child(the_parent->right); // RR
+      the_current = the_parent->right;
+    }
+  }
+  void rotate_with_left_child(Node * & the_current) {
+    // rotate with leaft child, to the right
+    Node * return_node = the_current->left;
+    the_current->left = return_node->right;
+    // this is the node that goes down (the_current)
+    return_node->right = the_current;
+    the_current = return_node;
+  }
+  void rotate_with_right_child(Node * & the_current) {
+    // rotate with right child, to the left
+    Node * return_node = the_current->right;
+    the_current->right = return_node->left;
+    return_node->left = the_current;
+    the_current = return_node;
   }
   void remove(Str key, Node * & root) {
     // remove node from tree
