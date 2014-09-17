@@ -18,6 +18,10 @@ public:
     // set up bare bones node
     value.push_back(init_value);
   }
+  RedBlackNode(Str key, Str init_value, bool color):key(key), left(NULL), right(NULL), parent(NULL), color(color), visited(false) {
+    // set up bare bones node
+    value.push_back(init_value);
+  }
   RedBlackNode(Str key, Str init_value, RedBlackNode * left, RedBlackNode * right, RedBlackNode * parent, bool color, bool visited):key(key), left(left), right(right), parent(parent), color(color), visited(visited) {
     // set up node
     value.push_back(init_value);

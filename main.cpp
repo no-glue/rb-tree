@@ -13,8 +13,6 @@ int main() {
   tree->insert("c", "c");
   tree->insert("d", "d");
   tree->insert("e", "e");
-  cout<<"found: "<<tree->find("e")->value[0]<<endl;
-  tree->remove("e");
   delete tree;
   return 0;
 }

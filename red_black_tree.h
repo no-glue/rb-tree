@@ -30,39 +30,43 @@ private:
   Node * great;
   void insert(Str key, Str value, Node * & root, Node * & current, Node * & parent, Node * & grand, Node * & great) {
     // insert key and value to the tree
+    if(!root) {
+      root = new Node(key, value, false);
+      return;
+    }
     current = parent = grand = root;
     while(current && (current->key != key)) {
       great = grand; grand = parent; parent = current;
-      current = key < current->key ? current->left : current->right;
-      if(current && current->left->color && current->right->color) handle_reorient(key, value, root, current, parent, grand, great);
+      current = (key < current->key) ? current->left : current->right;
+      if(current && current->left && current->left->color && current->right && current->right->color) handle_reorient(key, root, current, parent, grand, great);
     }
-    if(current) return;
+    if(current) {current->value.push_back(value); return;}
     // current is there, nothing to do
     current = new Node(key, value);
     if(key < parent->key) parent->left = current;
     else parent->right = current;
-    handle_reorient(key, value, root, current, parent, grand, great);
+    handle_reorient(key, root, current, parent, grand, great);
   }
-  void handle_reorient(Str key, Str value, Node * & root, Node * & current, Node * & parent, Node * & grand, Node * & great) {
+  void handle_reorient(Str key, Node * & root, Node * & current, Node * & parent, Node * & grand, Node * & great) {
     // handle reorient
     current->color = true;
-    current->left->color = false;
-    current->right->color = false;
+    current->left && (current->left->color = false);
+    current->right && (current->right->color = false);
     // flip color
     if(parent->color) {
       // have to rotate
       grand->color = true;
-      if(key < grand->key != key < parent->key) {
-        rotate(key, value, parent, grand);
+      if((key < grand->key) != (key < parent->key)) {
+        rotate(key, parent, grand);
         // do double rotate
       }
-      rotate(key, value, current, great);
+      rotate(key, current, great);
       current->color = false;
     }
     root->right->color = false;
     // make root black
   }
-  void rotate(Str key, Str value, Node * & the_current, Node * & the_parent) {
+  void rotate(Str key, Node * & the_current, Node * & the_parent) {
     // rotate
     if(key < the_parent->key) {
       key < the_parent->left->key ? 
