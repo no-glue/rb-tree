@@ -56,7 +56,7 @@ private:
         rotate(key, value, parent, grand);
         // do double rotate
       }
-      rotate(key, item, current, great);
+      rotate(key, value, current, great);
       current->color = false;
     }
     root->right->color = false;
@@ -66,8 +66,8 @@ private:
     // rotate
     if(key < the_parent->key) {
       key < the_parent->left->key ? 
-        rotate_with_left_child(the_parent->left) : // LL todo rotate_with_left_child
-        rotate_with_right_child(the_parent->left); // LR todo rotate_with_right_child
+        rotate_with_left_child(the_parent->left) : // LL
+        rotate_with_right_child(the_parent->left); // LR
       the_current = the_parent->left;
     } else {
       key < the_parent->right->key ? 
@@ -88,6 +88,7 @@ private:
     // rotate with right child, to the left
     Node * return_node = the_current->right;
     the_current->right = return_node->left;
+    // this is the node that goes down (the_current)
     return_node->left = the_current;
     the_current = return_node;
   }
