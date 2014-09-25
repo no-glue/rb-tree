@@ -30,6 +30,28 @@ private:
   Node * great;
   void insert(Str key, Str value, Node * & root, Node * & current, Node * & parent, Node * & grand, Node * & great) {
     // insert key and value to the tree
+    if(!root) {
+      root = new Node(key, value, false);
+      return;
+    }
+    current = new Node(key, value);
+    grand = NULL;
+    great = current;
+    great->right = root;
+    parent = NULL;
+    Node * walk = great.rigth;
+    int direction = 0, last = 0;
+    // direction 0 left, 1 right
+    while(true) {
+      if(!walk) {
+        walk = new Node(key, value);
+        if(direction) parent->right = walk; else parent->left = walk;
+      } else if(walk->left->color && walk->right->color) {
+        // color flip, make parent red and children black
+        walk->color = true;
+        walk->left->color = walk->right->color = false;
+      }
+    }
   }
   void handle_reorient(Str key, Node * & root, Node * & current, Node * & parent, Node * & grand, Node * & great) {
   }
