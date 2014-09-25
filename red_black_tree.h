@@ -39,7 +39,7 @@ private:
     great = current;
     great->right = root;
     parent = NULL;
-    Node * walk = great.rigth;
+    Node * walk = great->rigth;
     int direction = 0, direction_great = 0, last = 0;
     // direction 0 left, 1 right
     while(true) {
@@ -53,7 +53,7 @@ private:
       }
       if(walk->color && parent->color) {
         // fix red violation
-        if(great->right == grand) direction_great = 1; else direction_great = 0;
+        direction_great = (great->right == grand) ? 1 : 0;
         if((last && parent->right == walk) || (!last && parent->left == walk)) {
           single_rotation(great, grand); // todo single_rotation
         } else {
