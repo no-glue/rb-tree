@@ -55,9 +55,9 @@ private:
         // fix red violation
         direction_great = (great->right == grand) ? 1 : 0;
         if((last && parent->right == walk) || (!last && parent->left == walk)) {
-          single_rotation(great, grand); // todo single_rotation
+          single_rotation(great, grand, 1 - level, direction_great); // todo single_rotation
         } else {
-          double_rotation(great, grand); // todo double_rotation
+          double_rotation(great, grand, 1 - level, direction_great); // todo double_rotation
         }
       }
       if(key == walk->key) {walk->value.push_back(value); return;}
@@ -71,7 +71,11 @@ private:
     root = current->right;
     root->color = false;
   }
-  void handle_reorient(Str key, Node * & root, Node * & current, Node * & parent, Node * & grand, Node * & great) {
+  void single_rotation(Node * & the_great, Node * & the_grand, direction, direction_great) {
+    // single rotation
+  }
+  void double_rotation(Node * & the_great, Node * & the_grand, direction, direction_great) {
+    // double rotation
   }
   void make_empty(Node * & root) {
     // make tree empty
