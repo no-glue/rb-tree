@@ -73,6 +73,12 @@ private:
   }
   void single_rotation(Node * & the_great, Node * & the_grand, direction, direction_great) {
     // single rotation
+    int other_side = direction - 1;
+    Node * return_node = (other_side) ? root->right : root->left; // todo root, pass by reference
+    if(other_side) root->right = return_node->left; else root->left = return_node->right;
+    if(direction) return_node->right = root; else return_node->left = root;
+    root->color = true;
+    return_node->color = false;
   }
   void double_rotation(Node * & the_great, Node * & the_grand, direction, direction_great) {
     // double rotation
