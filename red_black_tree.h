@@ -40,7 +40,7 @@ private:
     great->right = root;
     parent = NULL;
     Node * walk = great.rigth;
-    int direction = 0, last = 0;
+    int direction = 0, direction_great = 0, last = 0;
     // direction 0 left, 1 right
     while(true) {
       if(!walk) {
@@ -51,7 +51,25 @@ private:
         walk->color = true;
         walk->left->color = walk->right->color = false;
       }
+      if(walk->color && parent->color) {
+        // fix red violation
+        if(great->right == grand) direction_great = 1; else direction_great = 0;
+        if((last && parent->right == walk) || (!last && parent->left == walk)) {
+          single_rotation(great, grand); // todo single_rotation
+        } else {
+          double_rotation(great, grand); // todo double_rotation
+        }
+      }
+      if(key == walk->key) {walk->value.push_back(value); return;}
+      last = direction;
+      direction = (key < walk->key) ? 0 : 1;
+      if(grand) great = grand;
+      grand = parent;
+      parent = walk;
+      walk = (direction) walk->right : walk->left;
     }
+    root = current->right;
+    root->color = false;
   }
   void handle_reorient(Str key, Node * & root, Node * & current, Node * & parent, Node * & grand, Node * & great) {
   }
