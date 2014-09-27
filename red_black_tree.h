@@ -34,6 +34,9 @@ private:
     else inserted->parent->right = inserted;
     insert_fixup_for(inserted, root); // todo insert_fixup_for
   }
+  void insert_fixup_for(Node * inserted, Node * & root) {
+    // fixup tree for new node
+  }
   Node * find(Str key, Node * & root) {
     // find a node given a key
     Node * to_look = root;
