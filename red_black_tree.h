@@ -17,39 +17,22 @@ private:
   Node * root;
   void insert(Str key, Str value, Node * & root) {
     // insert key and value
-    Node * inserted_node = new Node(key, value);
-    bool inserted = tree_insert(inserted_node, root);
-    if(inserted) insert_fixup_for(inserted_node, root); // todo insert_fixup_for
-  }
-  bool tree_insert(Node * inserted_node, Node * & root) {
-    // scan the tree, insert node
-    Node * parent = tree_find_last(inserted_node->key, root);
-    return tree_insert_child(parent, inserted_node, root);
-  }
-  Node * tree_find_last(Str key, Node * & root) {
-    // find place to insert new node
-    Node * walk = root, * previous = NULL;
+    Node * inserted = new Node(key, value), * walk, * previous;
+    if(!root) {
+      inserted->red = false;
+      root = inserted;
+      return;
+    }
     while(walk) {
       previous = walk;
-      if(key < walk->key && (walk = walk->left)) {}
-      else if(key > walk->key && (walk = walk->right)) {}
-      else return walk;
+      if(key < walk->key) walk = walk->left;
+      else if(key > walk->key) walk = walk->right;
+      else {walk->value.push_back(value); return;}
     }
-    return previous;
-  }
-  bool tree_insert_child(Node * parent, Node * inserted_node, Node * & root) {
-    // add child to parent
-    if(!parent) root = inserted_node;
-    else {
-      if(inserted_node->key < parent->key) parent->left = inserted_node;
-      else if(inserted_node->key > parent->key) parent->right = inserted_node;
-      else return false;
-    }
-    inserted_node->parent = parent;
-    return true;
-  }
-  void insert_fixup_for(Node * inserted_node, Node * & root) {
-    // fixup for inserted node
+    inserted->parent = previous;
+    if(inserted->key < inserted->parent->key) inserted->parent->left = inserted;
+    else inserted->parent->right = inserted;
+    insert_fixup_for(inserted, root); // todo insert_fixup_for
   }
   Node * find(Str key, Node * & root) {
     // find a node given a key
