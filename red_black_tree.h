@@ -7,11 +7,7 @@ public:
   }
   void insert(Str key, Str value) {
     // insert key and value
-    insert(key, value, root, current, parent, grand, great);
-  }
-  void remove(Str key) {
-    // remove node from tree
-    remove(key, root);
+    insert(key, value, root);
   }
   Node * find(Str key) {
     // find a node givem a key
@@ -19,14 +15,22 @@ public:
   }
 private:
   Node * root;
-  void make_empty(Node * & root) {
-    // make tree empty
-    if(root) {
-      make_empty(root->left);
-      make_empty(root->right);
-      delete root;
-    }
-    root = NULL;
+  void insert(Str key, Str value) {
+    // insert key and value
+    Node * inserted_node = new Node(key, value);
+    bool inserted = tree_insert(inserted_node); // todo insert_tree
+    if(inserted) insert_fixup_for(inserted_node);
+  }
+  bool tree_insert(Node * inserted_node) {
+    // scan the tree, insert node
+    Node * parent = tree_find_last(inserted_node->key); // todo tree_find_last
+    return tree_insert_child(parent, inserted_node); // todo tree_insert_child
+  }
+  Node * tree_find_last(Str key) {
+    // find place to insert new node
+  }
+  bool tree_insert_child(Node * parent, Node * inserted_node) {
+    // add child to parent
   }
   Node * find(Str key, Node * & root) {
     // find a node given a key
@@ -37,6 +41,15 @@ private:
       else if(to_look->right) to_look = to_look->right;
     }
     return NULL;
+  }
+  void make_empty(Node * & root) {
+    // make tree empty
+    if(root) {
+      make_empty(root->left);
+      make_empty(root->right);
+      delete root;
+    }
+    root = NULL;
   }
 };
 // Every node is either black or red

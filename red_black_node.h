@@ -14,7 +14,7 @@ public:
   // 0 red, 1 black
   bool visited;
   // is node visited, useful when searching
-  RedBlackNode(Str key, Str init_value):key(key), left(NULL), right(NULL), parent(NULL), color(true), visited(1) {
+  RedBlackNode(Str key, Str init_value):key(key), left(NULL), right(NULL), parent(NULL), color(true), visited(0) {
     // set up bare bones node
     value.push_back(init_value);
   }
