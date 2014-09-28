@@ -43,7 +43,7 @@ private:
         inserted->red = false;
         break;
       } else if(!inserted->parent->red) {
-        // case 2, parent of inserted is black
+        // case 2, parent of inserted is black, that's good
         break;
       } else {
         if(inserted->parent->parent->left == inserted->parent) uncle = inserted->parent->parent->right;
