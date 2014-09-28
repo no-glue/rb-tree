@@ -85,9 +85,25 @@ private:
   }
   void rotate_with_left_child(Node * inserted, Node * & root) {
     // rotate with left child, to right
+    Node * return_node = inserted->left;
+    transplant(inserted, return_node);
+    inserted->left = return_node->right; inserted->left->parent = inserted; 
+    return_node->right = inserted; return_node->right->parent = return_node;
+    // left side is unchanged
   }
   void rotate_with_right_child(Node * inserted, Node * & root) {
     // rotate with right child, to left
+    Node * return_node = inserted->right;
+    transplant(inserted, return_node);
+    inserted->right = return_node->left;
+    return_node->left = inserted;
+    // right side is unchanged
+  }
+  void transplant(Node * inserted, Node * child) {
+    // add child to parent
+    if(inserted == inserted->parent->left) inserted->parent->left = child;
+    else inserted->parent->right = child;
+    child->parent = inserted->parent;
   }
   Node * find(Str key, Node * & root) {
     // find a node given a key
