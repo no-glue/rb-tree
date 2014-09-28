@@ -36,74 +36,21 @@ private:
   }
   void insert_fixup_for(Node * inserted, Node * & root) {
     // fixup tree for new node
-    Node * uncle;
-    while(true) {
-      if(!inserted->parent) {
-        // case 1, inserted is root
-        inserted->red = false;
-        break;
-      } else if(!inserted->parent->red) {
-        // case 2, parent of inserted is black, that's good
-        break;
-      } else {
-        if(inserted->parent->parent->left == inserted->parent) uncle = inserted->parent->parent->right;
-        else uncle = inserted->parent->parent->left;
-        // get the uncle
-        if(uncle && uncle->red) {
-          // case 3, parent and uncle are red, can't have red edge
-          inserted->parent->red = uncle->red = false;
-          inserted->parent->parent->red = true;
-          inserted = inserted->parent->parent;
-        } else {
-          // case 4, parent is red or uncle is black or null
-          if(inserted->parent == inserted->parent->parent->left) {
-            // left right case, make it left left
-            if(inserted == inserted->parent->right) {
-              inserted = inserted->parent;
-              rotate_with_right_child(inserted, root); // todo rotate_with_right_child
-              // rotate with right child (rotate to left)
-            }
-            inserted->parent->red = false;
-            inserted->parent->parent->red = true;
-            rotate_with_left_child(inserted->parent->parent, root); // todo rotate_with_left_child
-            // rotate with left child (rotate to right)
-            break;
-          } else {
-            if(inserted == inserted->parent->left) {
-              // make it right right
-              inserted = inserted->parent;
-              rotate_with_left_child(inserted);
-            }
-            inserted->parent->red = false;
-            inserted->parent->parent->red = true;
-            rotate_with_right_child(inserted->parent->parent);
-            break;
-          }
-        }
-      }
-    }
+    // todo change this
   }
   void rotate_with_left_child(Node * inserted, Node * & root) {
     // rotate with left child, to right
-    Node * return_node = inserted->left;
-    transplant(inserted, return_node);
-    inserted->left = return_node->right; inserted->left->parent = inserted; 
-    return_node->right = inserted; return_node->right->parent = return_node;
+    // todo change this
     // left side is unchanged
   }
   void rotate_with_right_child(Node * inserted, Node * & root) {
     // rotate with right child, to left
-    Node * return_node = inserted->right;
-    transplant(inserted, return_node);
-    inserted->right = return_node->left;
-    return_node->left = inserted;
+    // todo change this
     // right side is unchanged
   }
   void transplant(Node * inserted, Node * child) {
     // add child to parent
-    if(inserted == inserted->parent->left) inserted->parent->left = child;
-    else inserted->parent->right = child;
-    child->parent = inserted->parent;
+    // todo change this
   }
   Node * find(Str key, Node * & root) {
     // find a node given a key
