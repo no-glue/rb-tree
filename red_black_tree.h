@@ -42,24 +42,52 @@ private:
       if(inserted->parent == inserted->parent->parent->left) {
         // parent is on the left, uncle is on the right
         uncle = inserted->parent->parent->right;
+        if(uncle->red) {
+          // case 1, parent and uncle of inserted are red
+          inserted->parent->red = uncle->red = false;
+          inserted->parent->parent->red = true;
+          inserted = inserted->parent->parent;
+        } else {
+          if(inserted == inserted->parent->right) {
+            // case 2 inserted is on the right side and uncle is red, need to rotate with right child
+            inserted = inserted->parent;
+            rotate_with_right_child(inserted); 
+          }
+        }
       } else {
         uncle = inserted->parent->parent->left;
       }
     }
   }
-  void rotate_with_left_child(Node * inserted, Node * & root) {
+  void rotate_with_left_child(Node * inserted) {
     // rotate with left child, to right
     // todo change this
     // left side is unchanged
   }
-  void rotate_with_right_child(Node * inserted, Node * & root) {
+  void rotate_with_right_child(Node * inserted) {
     // rotate with right child, to left
     // todo change this
+    Node * return_node = inserted->right;
+    transplant(inserted, return_node);
+    right_child(inserted, return_node->left); // todo right_child
+    left_child(return_node, inserted); // todo left_child
     // right side is unchanged
   }
   void transplant(Node * inserted, Node * child) {
     // add child to parent
     // todo change this
+    if(inserted == inserted->parent->left) left_child(inserted->parent, child);
+    else right_child(inserted->parent, child);
+  }
+  void left_child(Node * parent, Node * child) {
+    // set left child
+    parent->left = child;
+    child->parent = parent;
+  }
+  void right_child(Node * parent, Node * child) {
+    // set right child
+    parent->right = child;
+    child->parent = parent;
   }
   Node * find(Str key, Node * & root) {
     // find a node given a key
