@@ -59,8 +59,25 @@ private:
         }
       } else {
         uncle = inserted->parent->parent->left;
+        if(uncle->red) {
+          // case 1, parent and uncle of inserted are red
+          inserted->parent->red = uncle->red = false;
+          inserted->parent->parent->red = true;
+          inserted = inserted->parent->parent;
+        } else {
+          if(inserted == inserted->parent->left) {
+            // case 2 inserted is on the left side and uncle is red, need to rotate with left child
+            inserted = inserted->left;
+            right_rotate(inserted);
+          }
+          // case 3 inserted is a right child and uncle is red need to rotate with right child
+          inserted->parent->red = false;
+          inserted->parent->parent->red = true;
+          rotate_with_right_child(inserted->parent->parent);
+        }
       }
     }
+    if(root->red) root->red = false;
   }
   void rotate_with_left_child(Node * inserted) {
     // rotate with left child, to right
