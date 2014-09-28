@@ -17,7 +17,7 @@ private:
   Node * root;
   void insert(Str key, Str value, Node * & root) {
     // insert key and value
-    Node * inserted = new Node(key, value), * walk, * previous;
+    Node * inserted = new Node(key, value), * walk = root, * previous;
     if(!root) {
       inserted->red = false;
       root = inserted;
@@ -65,8 +65,8 @@ private:
   void make_empty(Node * & root) {
     // make tree empty
     if(root) {
-      make_empty(root->left);
-      make_empty(root->right);
+      if(root->left) make_empty(root->left);
+      if(root->right) make_empty(root->right);
       delete root;
     }
     root = NULL;
