@@ -37,6 +37,15 @@ private:
   void insert_fixup_for(Node * inserted, Node * & root) {
     // fixup tree for new node
     // todo change this
+    Node * uncle;
+    while(inserted->parent->red) {
+      if(inserted->parent == inserted->parent->parent->left) {
+        // parent is on the left, uncle is on the right
+        uncle = inserted->parent->parent->right;
+      } else {
+        uncle = inserted->parent->parent->left;
+      }
+    }
   }
   void rotate_with_left_child(Node * inserted, Node * & root) {
     // rotate with left child, to right
