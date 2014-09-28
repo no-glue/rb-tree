@@ -53,6 +53,9 @@ private:
             inserted = inserted->parent;
             rotate_with_right_child(inserted); 
           }
+          inserted->parent->red = false;
+          inserted->parent->parent->red = true;
+          rotate_with_left_child(inserted->parent->parent);
         }
       } else {
         uncle = inserted->parent->parent->left;
@@ -62,6 +65,10 @@ private:
   void rotate_with_left_child(Node * inserted) {
     // rotate with left child, to right
     // todo change this
+    Node * return_node = inserted->left;
+    transplant(inserted, return_node);
+    left_child(inserted, return_node->right);
+    right_child(return_node, inserted);
     // left side is unchanged
   }
   void rotate_with_right_child(Node * inserted) {
