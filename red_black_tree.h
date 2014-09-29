@@ -32,7 +32,7 @@ private:
     inserted->parent = previous;
     if(inserted->key < inserted->parent->key) inserted->parent->left = inserted;
     else inserted->parent->right = inserted;
-    insert_fixup_for(inserted, root); // todo insert_fixup_for
+    if(inserted->parent->red) insert_fixup_for(inserted, root); // todo insert_fixup_for
   }
   void insert_fixup_for(Node * inserted, Node * & root) {
     // fixup tree for new node
@@ -42,7 +42,7 @@ private:
       if(inserted->parent == inserted->parent->parent->left) {
         // parent is on the left, uncle is on the right
         uncle = inserted->parent->parent->right;
-        if(uncle->red) {
+        if(uncle && uncle->red) {
           // case 1, parent and uncle of inserted are red
           inserted->parent->red = uncle->red = false;
           inserted->parent->parent->red = true;
@@ -59,7 +59,7 @@ private:
         }
       } else {
         uncle = inserted->parent->parent->left;
-        if(uncle->red) {
+        if(uncle && uncle->red) {
           // case 1, parent and uncle of inserted are red
           inserted->parent->red = uncle->red = false;
           inserted->parent->parent->red = true;
@@ -68,7 +68,7 @@ private:
           if(inserted == inserted->parent->left) {
             // case 2 inserted is on the left side and uncle is red, need to rotate with left child
             inserted = inserted->left;
-            right_rotate(inserted);
+            rotate_with_left_child(inserted);
           }
           // case 3 inserted is a right child and uncle is red need to rotate with right child
           inserted->parent->red = false;
