@@ -10,19 +10,19 @@ public:
   // right child
   RedBlackNode * parent;
   // node's parent
-  bool color;
-  // true red, false black
+  bool red;
+  // is node red
   bool visited;
   // is node visited, useful when searching
-  RedBlackNode(Str key, Str init_value):key(key), left(NULL), right(NULL), parent(NULL), color(true), visited(false) {
+  RedBlackNode(Str key, Str init_value):key(key), left(NULL), right(NULL), parent(NULL), red(true), visited(false) {
     // set up bare bones node
     value.push_back(init_value);
   }
-  RedBlackNode(Str key, Str init_value, bool color):key(key), left(NULL), right(NULL), parent(NULL), color(color), visited(false) {
+  RedBlackNode(Str key, Str init_value, bool red):key(key), left(NULL), right(NULL), parent(NULL), red(red), visited(false) {
     // set up bare bones node
     value.push_back(init_value);
   }
-  RedBlackNode(Str key, Str init_value, RedBlackNode * left, RedBlackNode * right, RedBlackNode * parent, bool color, bool visited):key(key), left(left), right(right), parent(parent), color(color), visited(visited) {
+  RedBlackNode(Str key, Str init_value, RedBlackNode * left, RedBlackNode * right, RedBlackNode * parent, bool red, bool visited):key(key), left(left), right(right), parent(parent), red(red), visited(visited) {
     // set up node
     value.push_back(init_value);
   }
