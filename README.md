@@ -1,2 +1,2 @@
 # Dictionary
-Dictionary build on top-down red black tree, supporting multimap (same key can have multiple values).
+Dictionary build on bottom-up red black tree, supporting multimap (same key can have multiple values). Not very efficient. AA tree work better.
