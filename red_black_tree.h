@@ -118,12 +118,38 @@ private:
     child = (!there->right) ? there->left : there->right;
     if(!is_red(there)) {
       there->red = is_red(child);
-      // delete_case1
+      delete_case1(there, root);
     }
     replace(there, child, root);
     if(!there->parent && child) child->red = false;
     // child is root
     delete there;
+  }
+  void delete_case1(Node * removed, Node * & root) {
+    // there's just root, nothing to do
+    if(!removed->parent) return;
+    else delete_case2(removed, root);
+  }
+  void delete_case2(Node * removed, Node * & root) {
+    // node and brother are red, flip colors, make them black and parent red
+    Node * my_brother = brother(removed);
+    if(!my_brother) return;
+    if(is_red(my_brother)) {
+      removed->parent->red = true;
+      my_brother->red = false;
+      if(removed == removed->parent->left) rotate_with_right_child(removed->parent, root);
+      else rotate_with_left_child(removed->parent, root);
+    }
+    delete_case3(removed, root);
+  }
+  void delete_case3(Node * removed, Node * & root) {
+    // brother has black children, make him red
+    Node * my_brother = brother(removed);
+    if(!my_brother) return;
+    if(!is_red(removed->parent) && !is_red(my_brother) && !is_red(my_brother->left) && !is_red(my_brother->right)) {
+      my_brother->red = true;
+      delete_case1(removed->parent, root);
+    } else {} // delete case 4
   }
   void rotate_with_right_child(Node * & inserted, Node * & root) {
     // rotate with right child
