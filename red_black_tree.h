@@ -103,6 +103,28 @@ private:
       rotate_with_right_child(my_grandparent, root);
     }
   }
+  void remove(Str key, Node * & root) {
+    // remove node from tree
+    Node * there = find(key, root), * child, * predecessor;
+    if(!there) return;
+    if(there->left && there->right) {
+      predecessor = max_key(there->left);
+      if(!predecessor) return;
+      there->key = predecessor->key;
+      there->value = predecessor->value;
+      there = predecessor;
+    }
+    if(!there->left || !there->right) {} else return;
+    child = (!there->right) ? there->left : there->right;
+    if(!is_red(there)) {
+      there->red = is_red(child);
+      // delete_case1
+    }
+    replace(there, child, root);
+    if(!there->parent && child) child->red = false;
+    // child is root
+    delete there;
+  }
   void rotate_with_right_child(Node * & inserted, Node * & root) {
     // rotate with right child
     Node * return_node = inserted->right;
@@ -154,6 +176,12 @@ private:
     if(!inserted->parent->parent) return NULL;
     return inserted->parent->parent;
   }
+  Node * max_key(Node * inserted) {
+    // get max key
+    if(!inserted) return NULL;
+    while(inserted->right) inserted = inserted->right;
+    return inserted;
+  }
   void make_empty(Node * & root) {
     // make tree empty
     if(root) {
@@ -168,8 +196,8 @@ private:
     Node * to_look = root;
     while(to_look) {
       if(key == to_look->key) return to_look;
-      if(to_look->left && key < to_look->key) to_look = to_look->left;
-      else if(to_look->right) to_look = to_look->right;
+      if(key < to_look->key) to_look = to_look->left;
+      else to_look = to_look->right;
     }
     return NULL;
   }

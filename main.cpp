@@ -10,6 +10,7 @@ int main() {
   RedBlackTree<RedBlackNode<string, vector<string> >, string> * tree = new RedBlackTree<RedBlackNode<string, vector<string> >, string>();
   RedBlackNode<string, vector<string> > * root;
   RedBlackNode<string, vector<string> > * found;
+  string value;
   tree->insert("a", "a");
   tree->insert("b", "b");
   tree->insert("c", "c");
@@ -30,6 +31,11 @@ int main() {
   cout<<"root red "<<root->red<<endl;
   found = tree->find("g");
   cout<<"found "<<found->value[0]<<endl;
+  tree->remove("g");
+  found = tree->find("g");
+  value = (found) ? found->value[0] : "no";
+  cout<<"found "<<value<<endl;
+  // funny thing infinite loop without balance
   delete tree;
   return 0;
 }
