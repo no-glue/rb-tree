@@ -149,7 +149,16 @@ private:
     if(!is_red(removed->parent) && !is_red(my_brother) && !is_red(my_brother->left) && !is_red(my_brother->right)) {
       my_brother->red = true;
       delete_case1(removed->parent, root);
-    } else {} // delete case 4
+    } else delete_case4(removed, root);
+  }
+  void delete_case4(Node * removed, Node * & root) {
+    // same like previous, but parent is red
+    Node * my_brother = brother(removed);
+    if(!my_brother) return;
+    if(is_red(removed->parent) && !is_red(my_brother) && !is_red(my_brother->left) && !is_red(my_brother->right)) {
+      my_brother->red = true;
+      removed->parent->red = false;
+    } else {} // delete case 5
   }
   void rotate_with_right_child(Node * & inserted, Node * & root) {
     // rotate with right child
