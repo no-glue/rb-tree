@@ -173,7 +173,23 @@ private:
       my_brother->right->red = false;
       rotate_with_right_child(my_brother, root);
     }
-    // delete case 6
+    delete_case6(removed, root);
+  }
+  void delete_case6(Node * removed, Node * & root) {
+    // make parent black
+    Node * my_brother = brother(removed);
+    if(!my_brother) return;
+    my_brother->red = is_red(removed->parent);
+    removed->parent->red = false;
+    if(removed == removed->parent->left) {
+      if(!is_red(my_brother->right)) return;
+      my_brother->right->red = false;
+      rotate_with_right_child(removed->parent, root);
+    } else {
+      if(!is_red(my_brother->left)) return;
+      my_brother->left->red = false;
+      rotate_with_left_child(removed->parent, root);
+    }
   }
   void rotate_with_right_child(Node * & inserted, Node * & root) {
     // rotate with right child
