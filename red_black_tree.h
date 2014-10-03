@@ -248,6 +248,12 @@ private:
     while(inserted->right) inserted = inserted->right;
     return inserted;
   }
+  Node * min_key(Node * inserted) {
+    // get min key
+    if(!inserted) return NULL;
+    while(inserted->left) inserted = inserted->left;
+    return inserted;
+  }
   void make_empty(Node * & root) {
     // make tree empty
     if(root) {
