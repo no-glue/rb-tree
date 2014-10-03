@@ -18,6 +18,14 @@ int main() {
   tree->insert("f", "f");
   tree->insert("g", "g");
   tree->insert("h", "h");
+  tree->insert("i", "i");
+  tree->insert("j", "j");
+  tree->insert("k", "k");
+  tree->insert("l", "l");
+  tree->insert("m", "m");
+  tree->insert("n", "n");
+  tree->insert("o", "o");
+  tree->insert("p", "p");
   root = tree->get_root();
   cout<<"root red "<<root->red<<endl;
   found = tree->find("g");

@@ -73,10 +73,50 @@ private:
       inserted->parent->red = false;
       my_uncle->red = false;
       my_grandparent->red = true;
-      insert_case1(inserted, my_grandparent);
+      insert_case1(my_grandparent, root);
     } else {
-      // insert case 4
+      insert_case4(inserted, root);
     }
+  }
+  void insert_case4(Node * inserted, Node * & root) {
+    // put things in right place, do rotations
+    Node * my_grandparent = grandparent(inserted);
+    if(!my_grandparent) return;
+    if(inserted == inserted->parent->right && inserted->parent == my_grandparent->left) {
+      rotate_with_right_child(inserted->parent, root); // todo rotate with right ch
+      inserted = inserted->left;
+    } else if(inserted == inserted->parent->left && inserted->parent == my_grandparent->right) {
+      rotate_with_left_child(inserted->parent, root); // todo rotate with left ch
+      inserted = inserted->right;
+    }
+    // insert case 5
+  }
+  void rotate_with_right_child(Node * & inserted, Node * & root) {
+    // rotate with right child
+    Node * return_node = inserted->right;
+    replace(inserted, return_node, root);
+    inserted->right = return_node->left;
+    return_node->left = inserted;
+    inserted->parent = return_node;
+    inserted = return_node;
+  }
+  void rotate_with_left_child(Node * & inserted, Node * & root) {
+    // rotate with left child
+    Node * return_node = inserted->left;
+    replace(inserted, return_node, root);
+    inserted->left = return_node->right;
+    return_node->right = inserted;
+    inserted->parent = return_node;
+    inserted = return_node;
+  }
+  void replace(Node * prev_child, Node * current_child, Node * & root) {
+    // replace child
+    if(!prev_child->parent) root = current_child;
+    else {
+      if(prev_child == prev_child->parent->left) prev_child->parent->left = current_child;
+      else prev_child->parent->right = current_child;
+    }
+    if(current_child) current_child->parent = prev_child->parent;
   }
   bool is_red(Node * inserted) {
     // see if node is red
