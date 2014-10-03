@@ -21,6 +21,22 @@ public:
     // get root
     return root;
   }
+  void visited(Str key, bool flag = true) {
+    // mark node as visited
+    Node * found = find(key, root);
+
+    if(found) found->visited = flag;
+  }
+  bool is_visited(Str key, bool def = true) {
+    // see if node is visited
+    Node * found = find(key, root);
+
+    return (found) ? found->visited : def;    
+  }
+  template<typename Visitor>void walk(Visitor * visitor) {
+    // walk the tree preorder
+    walk(visitor, root);
+  }
 private:
   Node * root;
   void insert(Str key, Str value, Node * & root) {
@@ -272,6 +288,14 @@ private:
       else to_look = to_look->right;
     }
     return NULL;
+  }
+  template<typename Visitor>void walk(Visitor * visitor, Node * & root) {
+    // walk the tree preorder
+    if(root) {
+      walk(visitor, root->left);
+      visitor->visit(root);
+      walk(visitor, root->right);
+    }
   }
 };
 // Every node is either black or red
