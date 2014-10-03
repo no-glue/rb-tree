@@ -54,8 +54,19 @@ private:
     // there is only root
     if(!inserted->parent) inserted->red = false;
     else {
-      //insert_case2
+      insert_case2(inserted, root);
     }
+  }
+  void insert_case2(Node * inserted, Node * & root) {
+    // parent is black, single child
+    if(!is_red(inserted->parent)) return;
+    else {
+      // insert_case3
+    }
+  }
+  bool is_red(Node * inserted) {
+    // see if node is red
+    return (inserted) ? inserted->red : false;
   }
   void make_empty(Node * & root) {
     // make tree empty
