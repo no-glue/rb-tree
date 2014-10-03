@@ -89,7 +89,19 @@ private:
       rotate_with_left_child(inserted->parent, root); // todo rotate with left ch
       inserted = inserted->right;
     }
-    // insert case 5
+    insert_case5(inserted, root);
+  }
+  void insert_case5(Node * inserted, Node * & root) {
+    // adjust colors and do rotations again
+    Node * my_grandparent(inserted);
+    if(!grandparent) return;
+    inserted->parent->red = false;
+    my_grandparent->red = true;
+    if(inserted == inserted->parent->left) {
+
+    } else(inserted == inserted->parent->right) {
+
+    }
   }
   void rotate_with_right_child(Node * & inserted, Node * & root) {
     // rotate with right child
