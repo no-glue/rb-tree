@@ -61,12 +61,46 @@ private:
     // parent is black, single child
     if(!is_red(inserted->parent)) return;
     else {
-      // insert_case3
+      insert_case3(inserted, root);
+    }
+  }
+  void insert_case3(Node * inserted, Node * & root) {
+    // parent and uncle are red, flip colors
+    Node * my_uncle = uncle(inserted), * my_grandparent = grandparent(inserted);
+    if(!my_uncle || !my_grandparent) return;
+    // if there is no uncle or grandparent don't do anything
+    if(is_red(my_uncle)) {
+      inserted->parent->red = false;
+      my_uncle->red = false;
+      my_grandparent->red = true;
+      insert_case1(inserted, my_grandparent);
+    } else {
+      // insert case 4
     }
   }
   bool is_red(Node * inserted) {
     // see if node is red
     return (inserted) ? inserted->red : false;
+  }
+  Node * uncle(Node * inserted) {
+    // get uncle
+    if(!inserted) return NULL;
+    if(!inserted->parent) return NULL;
+    if(!inserted->parent->parent) return NULL;
+    return brother(inserted->parent);
+  }
+  Node * brother(Node * inserted) {
+    // get brother
+    if(!inserted) return NULL;
+    if(!inserted->parent) return NULL;
+    return (inserted == inserted->parent->left) ? inserted->parent->right : inserted->parent->left;
+  }
+  Node * grandparent(Node * inserted) {
+    // grandparent
+    if(!inserted) return NULL;
+    if(!inserted->parent) return NULL;
+    if(!inserted->parent->parent) return NULL;
+    return inserted->parent->parent;
   }
   void make_empty(Node * & root) {
     // make tree empty

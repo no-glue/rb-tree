@@ -19,7 +19,9 @@ int main() {
   tree->insert("g", "g");
   tree->insert("h", "h");
   root = tree->get_root();
-  cout<<"root red"<<root->red<<endl;
+  cout<<"root red "<<root->red<<endl;
+  found = tree->find("g");
+  cout<<"found "<<found->value[0]<<endl;
   delete tree;
   return 0;
 }
