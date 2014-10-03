@@ -94,13 +94,13 @@ private:
   void insert_case5(Node * inserted, Node * & root) {
     // adjust colors and do rotations again
     Node * my_grandparent(inserted);
-    if(!grandparent) return;
+    if(!my_grandparent) return;
     inserted->parent->red = false;
     my_grandparent->red = true;
-    if(inserted == inserted->parent->left) {
-
-    } else(inserted == inserted->parent->right) {
-
+    if(inserted == inserted->parent->left && inserted->parent == my_grandparent->left) {
+      rotate_with_left_child(my_grandparent, root);
+    } else if(inserted == inserted->parent->right && inserted->parent == my_grandparent->right) {
+      rotate_with_right_child(my_grandparent, root);
     }
   }
   void rotate_with_right_child(Node * & inserted, Node * & root) {
